@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PC端 表单验证</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        body{
+            width: 100%;
+            height: 100%;
+        }
+        .box{
+            width: 400px;
+            padding: 40px;
+            margin: 111px auto;
+            transition: translate(-50%,-50%);
+            border-radius: 24px;
+            background: #191919;
+            text-align: center;
+            opacity: 0.8;
+            border: #3498db 2px solid;
+        }
+        .box h1{
+            color: #f89d6e;
+            text-transform: uppercase;
+            font-weight: 500px;
+        }
+        .box input[type="text"],.box input[type="password"]{
+            display: block;
+            background: none;
+            margin: 20px auto;
+            text-align: center;
+            border: 2px solid #3498db;
+            padding: 14px 10px;
+            width: 250px;
+            outline: none;
+            color: white;
+            border-radius: 24px;
+            transition: 0.25s;
+        }
+        .box input[type="text"]:focus,.box input[type="password"]:focus{
+            width: 260px;
+            
+            border-color: linear-gradient(to right, #fa709a 0%, #fee140 100%);
+        }
+        .box input[type="submit"]{
+            border: 0;
+            background: none;
+            display: block;
+            margin: 20px auto;
+            text-align: center;
+            background-image: linear-gradient(to right, #fa709a 0%, #fee140 100%);
+            padding: 14px 40px;
+            outline: none;
+            color: white;
+            border-radius: 24px;
+            transition: 0.25s;
+        }
+        .box input[type="submit"]:hover{
+            background-image: linear-gradient(to top, #f43b47 0%, #453a94 100%);
+        }
+        .imsg{
+            font-size: 10px;
+            color: #7c7d81;
+        }
+    </style>
+</head>
+<body>
+    <img src="18000.jpg" width="100%" height="100%" style="z-index:-100;position:absolute;left:0;top:0;">
+    <form class="box" onsubmit="return formValidation.checkForm()">
+        <h1>Login</h1>
+        <input type="text" name="" placeholder="username" id="user" onblur="formValidation.checkUserName()"> <span class="imsg" id="userInfo">请输入用户名</span>
+        <input type="password" name="" placeholder="password" id="pwd" onblur="formValidation.checkPassWord()"> <span class="imsg" id="pwdInfo">请输入密码</span>
+        <input type="text" name="" placeholder="telphone" id="tel" onblur="formValidation.checkTelPhone()"> <span class="imsg" id="telInfo">请输入手机号</span>
+        <input type="submit" name="" value="RegiSter" id="sub">
+    </form>
+</body>
+</html>
+
+<script>
+    // 获取用户名，密码，手机号
+    var user = document.getElementById('user');
+    var pwd = document.getElementById('pwd');
+    var tel = document.getElementById('tel');
+    // 获取span提示消息
+    var userInfo = document.getElementById('userInfo');
+    var pwdInfo = document.getElementById('pwdInfo');
+    var telInfo = document.getElementById('telInfo');
+    // 声明一个验证对象，里面存储检验方法
+    var formValidation = {
+        // 用户名验证
+        checkUserName:function(){
+            //用户名正则，4到16位（字母，数字，下划线，减号）
+            var uPattern = /^[a-zA-Z0-9_-]{4,16}$/;
+            if(user.value.length == 0){
+                userInfo.innerHTML = "用户名不能为空";
+                userInfo.style.color = "red";
+                userInfo.style.fontSize = "13px";
+                return false;
+            }
+            if(!uPattern.test(user.value)){
+                userInfo.innerHTML = "用户名长度4到16位（可包含字母，数字，下划线，减号）";
+                userInfo.style.color = "red";
+                userInfo.style.fontSize = "13px";
+                return false;
+            }else{
+                userInfo.innerHTML = "OK";
+                userInfo.style.color = "green";
+                userInfo.style.fontSize = "13px";
+                return true;
+            }
+        },
+        // 密码验证
+        checkPassWord:function(){
+            //密码强度正则，8-16位，数字和字母组合，不能全部是数字或字母
+            var pPattern = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,16}$/;
+            if(pwd.value.length == 0){
+                pwdInfo.innerHTML = "密码不能为空";
+                pwdInfo.style.color = "red";
+                pwdInfo.style.fontSize = "13px";
+                return false;
+            }
+            if(!pPattern.test(pwd.value)){
+                pwdInfo.innerHTML = "密码长度8-16位，数字和字母组合，不能全部是数字或字母";
+                pwdInfo.style.color = "red";
+                pwdInfo.style.fontSize = "13px";
+                return false;
+            }else{
+                pwdInfo.innerHTML = "OK";
+                pwdInfo.style.color = "green";
+                pwdInfo.style.fontSize = "13px";
+                return true;
+            }
+        },
+        // 手机号验证
+        checkTelPhone:function(){
+            //手机号正则
+            var mPattern = /^1(3|4|5|6|7|8|9)\d{9}$/;
+            if(tel.value.length == 0){
+                telInfo.innerHTML = "手机号不能为空";
+                telInfo.style.color = "red";
+                telInfo.style.fontSize = "13px";
+                return false;
+            }
+            if(!mPattern.test(tel.value)){
+                telInfo.innerHTML = "手机号不合法";
+                telInfo.style.color = "red";
+                telInfo.style.fontSize = "13px";
+                return false;
+            }else{
+                telInfo.innerHTML = "OK";
+                telInfo.style.color = "green";
+                telInfo.style.fontSize = "13px";
+                return true;
+            }
+        },
+        // 表单全部填写正确检测
+        checkForm:function(){
+            var userRes = this.checkUserName();
+            var pwdRes = this.checkPassWord();
+            var telRes = this.checkTelPhone();
+            return userRes && pwdRes && telRes;
+            if(userRes,pwdRes,telRes){
+            this.user.pwd.tel = "";
+            }
+        }
+    }
+</script>
